@@ -1,0 +1,25 @@
+name: Publish
+
+on:
+  push:
+    tags:
+    - '*'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set tag var
+      id: vars
+      run: echo ::set-output name=tag::${GITHUB_REF#refs/*/}
+    - name: Set up Go
+      uses: actions/setup-go@v2
+      with:
+        go-version: 1.17
+    - name: Build
+      run: go build -v ./...
+    - name: Trigger GOPROXY
+      run: GOPROXY=proxy.golang.org go list -m github.com/thetkpark/k64@${{ steps.vars.outputs.tag }}
+
