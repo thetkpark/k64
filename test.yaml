@@ -4,5 +4,5 @@ metadata:
   name: temp-storage-v2-secret
 type: Opaque
 data:
-  MASTER_KEY: cGFzd29yZA==
-  MASTER_KEY2: YW5vdGhlcnBhc3N3b3Jk
+  MASTER_KEY: secretpassword
+  MASTER_KEY2: anothersecretapassword
