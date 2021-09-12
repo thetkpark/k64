@@ -20,7 +20,6 @@ import (
 	"fmt"
 	"github.com/spf13/cobra"
 	"github.com/thetkpark/k64/utils"
-	"io/ioutil"
 	"os"
 	"sigs.k8s.io/kustomize/kyaml/yaml"
 )
@@ -42,11 +41,7 @@ var encodeCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		// Open file
 		filePath := args[0]
-		file, err := ioutil.ReadFile(filePath)
-		if err != nil {
-			fmt.Println("Unable to open file")
-			os.Exit(1)
-		}
+		file := utils.OpenFile(filePath)
 
 		// Parse yaml
 		kConfig, err := yaml.Parse(string(file))
@@ -88,10 +83,7 @@ var encodeCmd = &cobra.Command{
 			if len(outFilePath) == 0 {
 				outFilePath = filePath
 			}
-			if err := ioutil.WriteFile(outFilePath, []byte(strConfig), 0644); err != nil {
-				fmt.Println("Unable write back to", filePath)
-				os.Exit(1)
-			}
+			utils.WriteToFile(outFilePath, strConfig)
 		}
 	},
 }
