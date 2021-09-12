@@ -16,6 +16,7 @@ limitations under the License.
 package cmd
 
 import (
+	"errors"
 	"fmt"
 	"github.com/spf13/cobra"
 	"github.com/thetkpark/k64/utils"
@@ -24,17 +25,23 @@ import (
 	"sigs.k8s.io/kustomize/kyaml/yaml"
 )
 
-var filePath string
 var outFilePath string
 var isSave bool
 
-// convertCmd represents the convert command
-var convertCmd = &cobra.Command{
-	Use:   "convert",
-	Short: "Convert string in the data fields to base64.",
-	Long:  `Convert string in the data fields to base64. The output will print to the stdout by default.`,
+// encodeCmd represents the encode command
+var encodeCmd = &cobra.Command{
+	Use:   "encode",
+	Short: "encode string in the data fields to base64.",
+	Long:  `encode string in the data fields to base64. The output will print to the stdout by default.`,
+	Args: func(cmd *cobra.Command, args []string) error {
+		if len(args) < 1 {
+			return errors.New("requires input file argument")
+		}
+		return nil
+	},
 	Run: func(cmd *cobra.Command, args []string) {
 		// Open file
+		filePath := args[0]
 		file, err := ioutil.ReadFile(filePath)
 		if err != nil {
 			fmt.Println("Unable to open file")
@@ -90,8 +97,7 @@ var convertCmd = &cobra.Command{
 }
 
 func init() {
-	rootCmd.AddCommand(convertCmd)
-	convertCmd.Flags().StringVarP(&filePath, "file", "f", "", "File that you want to convert secret string to base64 string")
-	convertCmd.Flags().StringVarP(&outFilePath, "out", "o", "", "Write the output to this file path")
-	convertCmd.Flags().BoolVarP(&isSave, "save", "s", false, "Save the output to the same file")
+	rootCmd.AddCommand(encodeCmd)
+	encodeCmd.Flags().StringVarP(&outFilePath, "out", "o", "", "Write the output to this file path")
+	encodeCmd.Flags().BoolVarP(&isSave, "save", "s", false, "Save the output to the same file")
 }
