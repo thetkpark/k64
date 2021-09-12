@@ -16,30 +16,32 @@ limitations under the License.
 package cmd
 
 import (
-	"encoding/base64"
 	"fmt"
 	"github.com/spf13/cobra"
+	"github.com/thetkpark/k64/utils"
 	"io/ioutil"
 	"os"
 	"sigs.k8s.io/kustomize/kyaml/yaml"
 )
 
-
 var filePath string
+var outFilePath string
 var isSave bool
 
 // convertCmd represents the convert command
 var convertCmd = &cobra.Command{
 	Use:   "convert",
 	Short: "Convert string in the data fields to base64.",
-	Long: `Convert string in the data fields to base64. The output will print to the stdout.`,
+	Long:  `Convert string in the data fields to base64. The output will print to the stdout by default.`,
 	Run: func(cmd *cobra.Command, args []string) {
+		// Open file
 		file, err := ioutil.ReadFile(filePath)
 		if err != nil {
 			fmt.Println("Unable to open file")
 			os.Exit(1)
 		}
 
+		// Parse yaml
 		kConfig, err := yaml.Parse(string(file))
 		if err != nil {
 			fmt.Println("Unable to parse yaml")
@@ -47,8 +49,23 @@ var convertCmd = &cobra.Command{
 		}
 		dataMap := kConfig.GetDataMap()
 
+		// Check if the kind is secret
+		if kind := kConfig.GetKind(); kind != `Secret` {
+			var isContinue string
+			fmt.Printf("%s is not a secret kind. Do you want to continue encoding? (Y)es, (N)o: ", filePath)
+			_, err = fmt.Scan(&isContinue)
+			if err != nil {
+				fmt.Println("Unable to get answer")
+				os.Exit(1)
+			}
+			if isContinue == "N" || isContinue == "n" {
+				os.Exit(0)
+			}
+		}
+
+		// Load data fields and convert to base64
 		for key, value := range dataMap {
-			dataMap[key] = toBase64([]byte(value))
+			dataMap[key] = utils.ToBase64(value)
 		}
 		kConfig.SetDataMap(dataMap)
 		strConfig, err := kConfig.String()
@@ -57,13 +74,17 @@ var convertCmd = &cobra.Command{
 			os.Exit(1)
 		}
 
-		if !isSave {
+		// Output or save
+		if !isSave && len(outFilePath) == 0 {
 			fmt.Println(strConfig)
-			return
-		}
-		if err := ioutil.WriteFile(filePath, []byte(strConfig), 0644); err != nil {
-			fmt.Println("Unable write back to", filePath)
-			os.Exit(1)
+		} else {
+			if len(outFilePath) == 0 {
+				outFilePath = filePath
+			}
+			if err := ioutil.WriteFile(outFilePath, []byte(strConfig), 0644); err != nil {
+				fmt.Println("Unable write back to", filePath)
+				os.Exit(1)
+			}
 		}
 	},
 }
@@ -71,10 +92,6 @@ var convertCmd = &cobra.Command{
 func init() {
 	rootCmd.AddCommand(convertCmd)
 	convertCmd.Flags().StringVarP(&filePath, "file", "f", "", "File that you want to convert secret string to base64 string")
+	convertCmd.Flags().StringVarP(&outFilePath, "out", "o", "", "Write the output to this file path")
 	convertCmd.Flags().BoolVarP(&isSave, "save", "s", false, "Save the output to the same file")
 }
-
-func toBase64(text []byte) string {
-	return base64.StdEncoding.EncodeToString(text)
-}
-
