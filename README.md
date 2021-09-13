@@ -2,7 +2,7 @@
 
 > CLI that help you encode normal string in data fields of Kubernetes secret yaml to base64.
 
-![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/thetkpark/k64)![https://goreportcard.com/badge/github.com/thetkpark/k64](https://goreportcard.com/badge/github.com/thetkpark/k64)![https://img.shields.io/github/license/thetkpark/cscms](https://img.shields.io/github/license/thetkpark/cscms) 
+![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/thetkpark/k64) ![https://goreportcard.com/badge/github.com/thetkpark/k64](https://goreportcard.com/badge/github.com/thetkpark/k64) ![https://img.shields.io/github/license/thetkpark/cscms](https://img.shields.io/github/license/thetkpark/cscms) [![Publish](https://github.com/thetkpark/k64/actions/workflows/go-publish-on-tag.yml/badge.svg)](https://github.com/thetkpark/k64/actions/workflows/go-publish-on-tag.yml)
 
 [![forthebadge](https://forthebadge.com/images/badges/made-with-go.svg)](https://forthebadge.com)[![forthebadge](https://forthebadge.com/images/badges/you-didnt-ask-for-this.svg)](https://forthebadge.com)
 
