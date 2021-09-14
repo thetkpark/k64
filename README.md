@@ -8,7 +8,7 @@
 
 When writing the Kubernetes secret declaration file in YAML format, the value of the data fields must be encoded using base64. I was annoy to just convert each secret one-by-one. Therefore, I built this CLI to help convert the normal secret value to base64 string.
 
-![ezgif-6-45065a16c51c](https://user-images.githubusercontent.com/12962097/133083758-328f2b44-2fcb-48d9-8e83-e424c0647a0b.gif)
+![ezgif-2-bb5097fc4a64](https://user-images.githubusercontent.com/12962097/133256501-c89d5709-446b-4ca8-9ace-e9266a4eda11.gif)
 
 ## Prerequisites
 
@@ -17,7 +17,8 @@ Install Go from https://golang.org
 ## Installation
 
 ```sh
-$ go install github.com/thetkpark/k64
+go get -u github.com/thetkpark/k64
+go install github.com/thetkpark/k64
 ```
 
 ## Usage
@@ -25,22 +26,22 @@ $ go install github.com/thetkpark/k64
 To encode from string to base64
 
 ```sh
-$ k64 encode <filename>
+k64 encode <filename>
 ```
 
 By default the output of that YAML file will be printed to stdout. You can use `-o` to write the output to another file or `-s` to save output to the save file.
 
 ```sh
-$ k64 encode <filename> -s
+k64 encode <filename> -s
 ```
 
 ```sh
-$ k64 encode <filename> -o <filename>
+k64 encode <filename> -o <filename>
 ```
 
 To decode from base64 to string. The flag `-o` and `-s` can also be used here.
 
 ```sh
-$ k64 decode <filename>
+k64 decode <filename>
 ```
 
