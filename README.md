@@ -4,7 +4,7 @@
 
 ![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/thetkpark/k64) ![https://goreportcard.com/badge/github.com/thetkpark/k64](https://goreportcard.com/badge/github.com/thetkpark/k64) ![https://img.shields.io/github/license/thetkpark/cscms](https://img.shields.io/github/license/thetkpark/cscms) [![Publish](https://github.com/thetkpark/k64/actions/workflows/go-publish-on-tag.yml/badge.svg)](https://github.com/thetkpark/k64/actions/workflows/go-publish-on-tag.yml)
 
-[![forthebadge](https://forthebadge.com/images/badges/made-with-go.svg)](https://forthebadge.com)[![forthebadge](https://forthebadge.com/images/badges/you-didnt-ask-for-this.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/made-with-go.svg)](https://forthebadge.com) [![forthebadge](https://forthebadge.com/images/badges/you-didnt-ask-for-this.svg)](https://forthebadge.com)
 
 When writing the Kubernetes secret declaration file in YAML format, the value of the data fields must be encoded using base64. I was annoy to just convert each secret one-by-one. Therefore, I built this CLI to help convert the normal secret value to base64 string.
 
